@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dicionário do Eufemismo — Terra Mãe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Lexend:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #121316;
+    --panel: #1b1d22;
+    --panel-2: #21242b;
+    --red: #e0483e;
+    --red-dim: #4a2422;
+    --gray-accent: #8b93a1;
+    --gray-dim: #2b2e35;
+    --yellow: #ffcc33;
+    --green: #3ecf8e;
+    --text: #f3f2ee;
+    --text-dim: #b7bac2;
+    --radius: 16px;
+    --focus: 3px solid var(--yellow);
+  }
+
+  *{ box-sizing: border-box; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+  }
+
+  body{
+    margin:0;
+    background: var(--bg);
+    background-image:
+      radial-gradient(circle at 15% 10%, rgba(224,72,62,0.10), transparent 40%),
+      radial-gradient(circle at 85% 90%, rgba(139,147,161,0.10), transparent 40%);
+    color: var(--text);
+    font-family: 'Lexend', system-ui, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 60px;
+  }
+
+  a, button{ font-family: inherit; }
+
+  header{
+    padding: 28px 20px 18px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .kicker{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    background: var(--panel);
+    border: 1px solid #33363d;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    margin-bottom: 14px;
+  }
+
+  h1{
+    font-family: 'Anton', 'Lexend', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    font-size: clamp(2rem, 6vw, 3.4rem);
+    line-height: 1.05;
+    margin: 0 0 10px;
+  }
+  h1 span{ color: var(--red); }
+
+  .subtitle{
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    max-width: 620px;
+    margin: 0 auto 22px;
+    line-height: 1.5;
+  }
+
+  .howto{
+    background: var(--panel);
+    border: 1px solid #33363d;
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    max-width: 760px;
+    margin: 0 auto 20px;
+    text-align: left;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+    display:flex;
+    gap:14px;
+    align-items:flex-start;
+  }
+  .howto strong{ color: var(--text); }
+  .howto .ico{ font-size: 1.4rem; flex-shrink:0; }
+
+  .legend{
+    display:flex;
+    gap: 14px;
+    justify-content:center;
+    flex-wrap: wrap;
+    margin: 0 auto 26px;
+  }
+  .legend-item{
+    display:flex; align-items:center; gap:8px;
+    background: var(--panel);
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.88rem;
+    border: 1px solid #33363d;
+  }
+  .dot{ width:12px; height:12px; border-radius:50%; flex-shrink:0; }
+  .dot.red{ background: var(--red); }
+  .dot.gray{ background: var(--gray-accent); }
+
+  .progress-wrap{
+    max-width: 500px;
+    margin: 0 auto 30px;
+    padding: 0 20px;
+  }
+  .progress-label{
+    display:flex; justify-content:space-between;
+    font-size: 0.85rem; color: var(--text-dim); margin-bottom: 6px;
+  }
+  .progress-bar{
+    height: 10px;
+    background: var(--panel);
+    border-radius: 999px;
+    overflow: hidden;
+    border: 1px solid #33363d;
+  }
+  .progress-fill{
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--red), var(--yellow));
+    transition: width 0.5s ease;
+  }
+
+  main{
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .board{
+    display:grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 760px){
+    .board{ grid-template-columns: 1fr; }
+  }
+
+  .column-title{
+    font-size: 0.85rem;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    color: var(--text-dim);
+    margin: 0 0 12px;
+    display:flex; align-items:center; gap:8px;
+  }
+
+  .column-title.red-title{ color: #ff8a80; }
+  .column-title.gray-title{ color: var(--gray-accent); }
+
+  .card-list{
+    display:flex;
+    flex-direction:column;
+    gap: 10px;
+  }
+
+  .card{
+    position:relative;
+    text-align:left;
+    background: var(--panel-2);
+    border: 2px solid transparent;
+    border-left: 6px solid var(--red-dim);
+    border-radius: 12px;
+    padding: 14px 46px 14px 16px;
+    color: var(--text);
+    font-size: 0.98rem;
+    line-height:1.4;
+    cursor: pointer;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: transform 0.15s ease, border-color 0.15s ease, background 0.15s ease, opacity 0.4s ease;
+  }
+  .card.gray{ border-left-color: var(--gray-dim); }
+
+  .card-thumb{
+    width: 64px;
+    height: 64px;
+    flex-shrink: 0;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #3a3d45;
+  }
+  .card-text{ flex: 1; }
+
+  .card:hover{ transform: translateY(-2px); }
+  .card:focus-visible{ outline: var(--focus); outline-offset: 2px; }
+
+  .card.selected{
+    border-color: var(--yellow);
+    background: #2a2418;
+  }
+
+  .card.solved{
+    opacity: 0.35;
+    cursor: default;
+    pointer-events: none;
+  }
+  .card.solved::after{
+    content: "✓";
+    position:absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--green);
+    font-weight: 700;
+    font-size: 1.1rem;
+  }
+
+  .card .speak-btn{
+    position:absolute;
+    right: 8px;
+    top: 8px;
+    background: none;
+    border: none;
+    color: var(--text-dim);
+    font-size: 1.05rem;
+    cursor:pointer;
+    padding: 4px 6px;
+    border-radius: 6px;
+    line-height:1;
+  }
+  .card .speak-btn:hover{ color: var(--yellow); }
+  .card .speak-btn:focus-visible{ outline: var(--focus); }
+  .card.solved .speak-btn{ display:none; }
+
+  .card.shake{
+    animation: shake 0.5s ease;
+    border-color: var(--red);
+  }
+  @keyframes shake{
+    0%,100%{ transform: translateX(0); }
+    20%{ transform: translateX(-8px); }
+    40%{ transform: translateX(7px); }
+    60%{ transform: translateX(-5px); }
+    80%{ transform: translateX(4px); }
+  }
+
+  .card.pop{
+    animation: pop 0.5s ease;
+  }
+  @keyframes pop{
+    0%{ transform: scale(1); }
+    40%{ transform: scale(1.06); }
+    100%{ transform: scale(1); }
+  }
+
+  .glossary{
+    margin-top: 44px;
+    padding-top: 28px;
+    border-top: 1px solid #2a2d34;
+  }
+  .glossary h2{
+    font-family:'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin-bottom: 6px;
+  }
+  .glossary p.hint{
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 0 0 16px;
+  }
+  .glossary-grid{
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px,1fr));
+    gap: 12px;
+  }
+  .glossary-item{
+    background: var(--panel);
+    border: 1px solid #33363d;
+    border-radius: 12px;
+    padding: 14px 16px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .glossary-item.show{ opacity: 1; transform: translateY(0); }
+  .glossary-item .term{ color: var(--red); font-weight: 700; margin-bottom: 6px; font-size: 0.95rem; }
+  .glossary-item .reality{ color: var(--text-dim); font-size: 0.88rem; line-height:1.4; }
+
+  #confetti-canvas{
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+  }
+
+  .modal-overlay{
+    position: fixed; inset:0;
+    background: rgba(0,0,0,0.75);
+    display:flex; align-items:center; justify-content:center;
+    z-index: 100;
+    padding: 20px;
+    opacity: 0;
+    pointer-events:none;
+    transition: opacity 0.3s ease;
+  }
+  .modal-overlay.open{ opacity:1; pointer-events:auto; }
+
+  .modal{
+    background: var(--panel);
+    border: 1px solid #3a3d45;
+    border-radius: 20px;
+    padding: 34px 30px;
+    max-width: 480px;
+    width: 100%;
+    text-align:center;
+  }
+  .modal h2{
+    font-family:'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.8rem;
+    margin: 0 0 10px;
+  }
+  .modal .rank{
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 14px 0 6px;
+  }
+  .modal .rank.otimo{ color: var(--green); }
+  .modal .rank.medio{ color: var(--yellow); }
+  .modal .rank.ruim{ color: var(--red); }
+  .modal p{ color: var(--text-dim); line-height:1.5; }
+  .modal .stats{
+    display:flex; justify-content:center; gap: 22px;
+    margin: 18px 0;
+  }
+  .modal .stat b{ display:block; font-size:1.5rem; }
+  .modal .stat span{ font-size: 0.8rem; color: var(--text-dim); }
+
+  .btn{
+    display:inline-block;
+    margin-top: 14px;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    padding: 12px 26px;
+    border-radius: 999px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .btn:hover{ filter: brightness(1.1); }
+  .btn:focus-visible{ outline: var(--focus); outline-offset: 3px; }
+  .btn.secondary{
+    background: transparent;
+    border: 1px solid #3a3d45;
+    color: var(--text);
+    margin-left: 8px;
+  }
+
+  .restart-row{
+    text-align:center;
+    margin: 34px 0 10px;
+  }
+
+  footer{
+    text-align:center;
+    color: var(--text-dim);
+    font-size: 0.8rem;
+    margin-top: 50px;
+  }
+
+  .sr-only{
+    position:absolute; width:1px; height:1px; padding:0; margin:-1px;
+    overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="confetti-canvas"></canvas>
+
+<header>
+  <div class="kicker">📖 Círculo de Leitura · Lua de Larvas</div>
+  <h1>Dicionário do <span>Eufemismo</span></h1>
+  <p class="subtitle">A Terra Mãe fala de um jeito. A realidade é outra. Associe cada frase da propaganda ao que ela realmente esconde.</p>
+</header>
+
+<div class="howto">
+  <div class="ico">🎧</div>
+  <div>
+    <strong>Como jogar:</strong> toque numa carta vermelha (o que a Terra Mãe diz), depois numa carta cinza (a realidade escondida). Se as duas formarem um par, o painel comemora. Se errar, é só tentar de novo — não tem cronômetro nem pressa. Toque no ícone 🔊 para ouvir qualquer carta em voz alta.
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><span class="dot red"></span> Vermelha — linguagem da Terra Mãe</div>
+  <div class="legend-item"><span class="dot gray"></span> Cinza — a realidade escondida</div>
+</div>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Pares desvendados</span>
+    <span id="progress-text">0 / 15</span>
+  </div>
+  <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+</div>
+
+<main>
+  <div class="board">
+    <div>
+      <p class="column-title red-title">📢 O que a Terra Mãe diz</p>
+      <div class="card-list" id="red-list"></div>
+    </div>
+    <div>
+      <p class="column-title gray-title">🔍 O que está escondido</p>
+      <div class="card-list" id="gray-list"></div>
+    </div>
+  </div>
+
+  <div class="restart-row">
+    <button class="btn secondary" id="restart-btn">🔄 Recomeçar jogo</button>
+  </div>
+
+  <div class="glossary">
+    <h2>Glossário desvendado</h2>
+    <p class="hint">Os pares que você já descobriu aparecem aqui como consulta.</p>
+    <div class="glossary-grid" id="glossary-grid"></div>
+  </div>
+</main>
+
+<footer>Baseado em <em>Lua de Larvas</em>, de Sally Gardner — material de apoio para o Círculo de Leitura.</footer>
+
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <h2 id="modal-title">Você desvendou a Terra Mãe!</h2>
+    <p>Todos os 15 pares foram encontrados. Veja como você foi:</p>
+    <div class="stats">
+      <div class="stat"><b id="stat-pairs">15</b><span>pares certos</span></div>
+      <div class="stat"><b id="stat-errors">0</b><span>tentativas erradas</span></div>
+    </div>
+    <div class="rank" id="rank-text"></div>
+    <p id="rank-msg"></p>
+    <button class="btn" id="play-again-btn">Jogar novamente</button>
+  </div>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  const pairs = [
+    { id:1, term:"Terra Mãe", reality:"Um Estado totalitário que controla, persegue e elimina pessoas.", img:"assets/img1.jpg" },
+    { id:2, term:"Pureza / raça da pureza", reality:"Ideologia de exclusão que considera alguns seres humanos superiores a outros.", img:"assets/img2.jpg" },
+    { id:3, term:"Mães pela Pureza", reality:"Grupo de informantes que espiona e denuncia os vizinhos em troca de benefícios.", img:"assets/img3.jpg" },
+    { id:4, term:"Louvada seja a Terra Mãe", reality:"Transformação do governo em objeto de culto quase religioso.", img:"assets/img4.jpg" },
+    { id:5, term:"Juventude da Terra Mãe", reality:"Doutrinação de adolescentes e treinamento para a violência.", img:"assets/img5.jpg" },
+    { id:6, term:"Supremacia técnica", reality:"Fraude tecnológica utilizada para provar o poder do regime.", img:"assets/img6.jpg" },
+    { id:7, term:"Conquistar o espaço", reality:"Ampliar o poder político e militar da Terra Mãe por meio de uma encenação.", img:"assets/img7.jpg" },
+    { id:8, term:"Impérios do mal", reality:"Expressão propagandística que divide o mundo entre a Terra Mãe e seus supostos inimigos.", img:"assets/img8.jpg" },
+    { id:9, term:"Linhagem errada, cor errada ou nacionalidade errada", reality:"Racismo, xenofobia, perseguição étnica e seleção de quem merece viver.", img:"assets/img9.jpg" },
+    { id:10, term:"Trabalhadores lunares", reality:"Trabalhadores escravizados e descartáveis, destinados à morte depois da falsa missão.", img:"assets/img10.jpg" },
+    { id:11, term:"Voluntários", reality:"Trabalhadores escolhidos sob ameaça de armas, sem liberdade para recusar.", img:"assets/img11.jpg" },
+    { id:12, term:"Salvação, em lugar da aniquilação", reality:"Uma ameaça de morte apresentada como se fosse escolha ou benefício.", img:"assets/img12.jpg" },
+    { id:13, term:"Zona Sete", reality:"Área de segregação, fome, vigilância, trabalhos forçados e extermínio.", img:"assets/img13.jpg" },
+    { id:14, term:"Fazenda de Larvas", reality:"Local para onde pessoas perseguidas são enviadas, mortas e transformadas em alimento para moscas.", img:"assets/img14.jpg" },
+    { id:15, term:"Programa de Reeducação", reality:"Trabalho forçado, punição, controle ideológico e possível execução.", img:"assets/img15.jpg" }
+  ];
+
+  function shuffle(arr){
+    const a = arr.slice();
+    for(let i=a.length-1;i>0;i--){
+      const j = Math.floor(Math.random()*(i+1));
+      [a[i],a[j]]=[a[j],a[i]];
+    }
+    return a;
+  }
+
+  const redList = document.getElementById('red-list');
+  const grayList = document.getElementById('gray-list');
+  const glossaryGrid = document.getElementById('glossary-grid');
+  const progressText = document.getElementById('progress-text');
+  const progressFill = document.getElementById('progress-fill');
+
+  let solvedCount = 0;
+  let mistakeCount = 0;
+  let selectedRed = null;
+  let selectedGray = null;
+  let locked = false;
+
+  function speak(text){
+    if(!('speechSynthesis' in window)) return;
+    window.speechSynthesis.cancel();
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'pt-BR';
+    utter.rate = 0.95;
+    window.speechSynthesis.speak(utter);
+  }
+
+  function buildCard(type, text, id, imgSrc){
+    const card = document.createElement('button');
+    card.className = 'card ' + (type === 'gray' ? 'gray' : '');
+    card.type = 'button';
+    card.dataset.id = id;
+    card.dataset.type = type;
+
+    if(imgSrc){
+      const img = document.createElement('img');
+      img.className = 'card-thumb';
+      img.src = imgSrc;
+      img.alt = '';
+      img.loading = 'lazy';
+      card.appendChild(img);
+    }
+
+    const span = document.createElement('span');
+    span.className = 'card-text';
+    span.textContent = text;
+    card.appendChild(span);
+
+    const speakBtn = document.createElement('span');
+    speakBtn.className = 'speak-btn';
+    speakBtn.textContent = '🔊';
+    speakBtn.setAttribute('role','button');
+    speakBtn.setAttribute('aria-label','Ouvir esta carta em voz alta');
+    speakBtn.tabIndex = 0;
+    speakBtn.addEventListener('click', function(e){
+      e.stopPropagation();
+      speak(text);
+    });
+    speakBtn.addEventListener('keydown', function(e){
+      if(e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        e.stopPropagation();
+        speak(text);
+      }
+    });
+    card.appendChild(speakBtn);
+
+    card.addEventListener('click', function(){ onCardClick(card); });
+    return card;
+  }
+
+  function render(){
+    redList.innerHTML = '';
+    grayList.innerHTML = '';
+    const shuffledRed = shuffle(pairs);
+    const shuffledGray = shuffle(pairs);
+    shuffledRed.forEach(p => redList.appendChild(buildCard('red', p.term, p.id, p.img)));
+    shuffledGray.forEach(p => grayList.appendChild(buildCard('gray', p.reality, p.id)));
+  }
+
+  function onCardClick(card){
+    if(locked) return;
+    if(card.classList.contains('solved')) return;
+
+    const type = card.dataset.type;
+
+    if(type === 'red'){
+      if(selectedRed) selectedRed.classList.remove('selected');
+      selectedRed = card;
+      card.classList.add('selected');
+    } else {
+      if(selectedGray) selectedGray.classList.remove('selected');
+      selectedGray = card;
+      card.classList.add('selected');
+    }
+
+    if(selectedRed && selectedGray){
+      checkMatch();
+    }
+  }
+
+  function checkMatch(){
+    locked = true;
+    const redId = selectedRed.dataset.id;
+    const grayId = selectedGray.dataset.id;
+
+    if(redId === grayId){
+      const pair = pairs.find(p => String(p.id) === redId);
+      selectedRed.classList.add('pop');
+      selectedGray.classList.add('pop');
+      celebrate();
+      speak(pair.term + '. ' + pair.reality);
+      setTimeout(function(){
+        selectedRed.classList.remove('selected','pop');
+        selectedGray.classList.remove('selected','pop');
+        selectedRed.classList.add('solved');
+        selectedGray.classList.add('solved');
+        selectedRed.tabIndex = -1;
+        selectedGray.tabIndex = -1;
+        addToGlossary(pair);
+        solvedCount++;
+        updateProgress();
+        selectedRed = null;
+        selectedGray = null;
+        locked = false;
+        if(solvedCount === pairs.length){
+          setTimeout(showFinalModal, 500);
+        }
+      }, 700);
+    } else {
+      mistakeCount++;
+      selectedRed.classList.add('shake');
+      selectedGray.classList.add('shake');
+      buzz();
+      setTimeout(function(){
+        selectedRed.classList.remove('shake','selected');
+        selectedGray.classList.remove('shake','selected');
+        selectedRed = null;
+        selectedGray = null;
+        locked = false;
+      }, 550);
+    }
+  }
+
+  function addToGlossary(pair){
+    const item = document.createElement('div');
+    item.className = 'glossary-item';
+    item.innerHTML = '<img class="card-thumb" style="margin-bottom:8px" src="' + pair.img + '" alt="">' +
+      '<div class="term">' + pair.term + '</div><div class="reality">' + pair.reality + '</div>';
+    glossaryGrid.appendChild(item);
+    requestAnimationFrame(function(){ item.classList.add('show'); });
+  }
+
+  function updateProgress(){
+    progressText.textContent = solvedCount + ' / ' + pairs.length;
+    progressFill.style.width = (solvedCount / pairs.length * 100) + '%';
+  }
+
+  // ---- Áudio sintetizado (sem arquivos externos) ----
+  let audioCtx = null;
+  function getCtx(){
+    if(!audioCtx){
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if(AC) audioCtx = new AC();
+    }
+    return audioCtx;
+  }
+
+  function celebrate(){
+    const ctx = getCtx();
+    if(ctx){
+      const now = ctx.currentTime;
+      const notes = [523.25, 659.25, 783.99, 1046.5];
+      notes.forEach(function(freq, i){
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0, now + i*0.09);
+        gain.gain.linearRampToValueAtTime(0.18, now + i*0.09 + 0.02);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i*0.09 + 0.35);
+        osc.connect(gain).connect(ctx.destination);
+        osc.start(now + i*0.09);
+        osc.stop(now + i*0.09 + 0.4);
+      });
+
+      // "aplausos" com ruído filtrado
+      const bufferSize = ctx.sampleRate * 0.6;
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for(let i=0;i<bufferSize;i++){ data[i] = (Math.random()*2-1) * Math.pow(1 - i/bufferSize, 1.5); }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+      const filter = ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 2200;
+      filter.Q.value = 0.6;
+      const noiseGain = ctx.createGain();
+      noiseGain.gain.value = 0.35;
+      noise.connect(filter).connect(noiseGain).connect(ctx.destination);
+      noise.start(now);
+    }
+    burstConfetti();
+  }
+
+  function buzz(){
+    const ctx = getCtx();
+    if(!ctx) return;
+    const now = ctx.currentTime;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(180, now);
+    osc.frequency.exponentialRampToValueAtTime(90, now + 0.25);
+    gain.gain.setValueAtTime(0.16, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.28);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now);
+    osc.stop(now + 0.3);
+  }
+
+  // ---- Confete simples em canvas ----
+  const canvas = document.getElementById('confetti-canvas');
+  const cctx = canvas.getContext('2d');
+  let particles = [];
+  let animRunning = false;
+
+  function resizeCanvas(){
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+  }
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+
+  const confettiColors = ['#e0483e', '#ffcc33', '#8b93a1', '#3ecf8e', '#f3f2ee'];
+
+  function burstConfetti(){
+    const cx = canvas.width / 2;
+    const cy = canvas.height * 0.35;
+    for(let i=0;i<70;i++){
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 3 + Math.random() * 6;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 2,
+        size: 4 + Math.random() * 5,
+        color: confettiColors[Math.floor(Math.random()*confettiColors.length)],
+        rot: Math.random() * Math.PI,
+        vr: (Math.random() - 0.5) * 0.3,
+        life: 0,
+        maxLife: 70 + Math.random() * 30
+      });
+    }
+    if(!animRunning){ animRunning = true; requestAnimationFrame(animateConfetti); }
+  }
+
+  function animateConfetti(){
+    cctx.clearRect(0,0,canvas.width, canvas.height);
+    particles.forEach(function(p){
+      p.vy += 0.15;
+      p.x += p.vx;
+      p.y += p.vy;
+      p.rot += p.vr;
+      p.life++;
+      cctx.save();
+      cctx.translate(p.x, p.y);
+      cctx.rotate(p.rot);
+      cctx.fillStyle = p.color;
+      cctx.globalAlpha = Math.max(0, 1 - p.life / p.maxLife);
+      cctx.fillRect(-p.size/2, -p.size/2, p.size, p.size*0.6);
+      cctx.restore();
+    });
+    particles = particles.filter(function(p){ return p.life < p.maxLife; });
+    if(particles.length > 0){
+      requestAnimationFrame(animateConfetti);
+    } else {
+      animRunning = false;
+      cctx.clearRect(0,0,canvas.width, canvas.height);
+    }
+  }
+
+  // ---- Modal final ----
+  const modalOverlay = document.getElementById('modal-overlay');
+  const statPairs = document.getElementById('stat-pairs');
+  const statErrors = document.getElementById('stat-errors');
+  const rankText = document.getElementById('rank-text');
+  const rankMsg = document.getElementById('rank-msg');
+
+  function showFinalModal(){
+    statPairs.textContent = pairs.length;
+    statErrors.textContent = mistakeCount;
+
+    let rankClass, rankLabel, msg;
+    if(mistakeCount <= 5){
+      rankClass = 'otimo';
+      rankLabel = 'Ótimo!';
+      msg = 'Você percebeu muito bem as nuances da manipulação da linguagem. Continua assim de olho na propaganda ao seu redor.';
+    } else if(mistakeCount <= 14){
+      rankClass = 'medio';
+      rankLabel = 'Médio';
+      msg = 'Você entendeu boa parte, mas algumas nuances ainda escaparam. Vale reler o glossário com calma.';
+    } else {
+      rankClass = 'ruim';
+      rankLabel = 'Precisa de mais atenção';
+      msg = 'Cuidado: fique mais atento às nuances das manipulações. Jogue de novo com calma, prestando atenção em cada palavra.';
+    }
+    rankText.textContent = rankLabel;
+    rankText.className = 'rank ' + rankClass;
+    rankMsg.textContent = msg;
+
+    modalOverlay.classList.add('open');
+  }
+
+  document.getElementById('play-again-btn').addEventListener('click', function(){
+    modalOverlay.classList.remove('open');
+    resetGame();
+  });
+
+  document.getElementById('restart-btn').addEventListener('click', function(){
+    if(confirm('Recomeçar o jogo do zero?')) resetGame();
+  });
+
+  function resetGame(){
+    solvedCount = 0;
+    mistakeCount = 0;
+    selectedRed = null;
+    selectedGray = null;
+    locked = false;
+    glossaryGrid.innerHTML = '';
+    updateProgress();
+    render();
+  }
+
+  render();
+  updateProgress();
+})();
+</script>
+
+</body>
+</html>
